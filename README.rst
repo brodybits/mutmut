@@ -52,7 +52,7 @@ it will try to figure out where the code to mutate lies. Run
 
 .. code-block:: console
 
-    mutmut --help
+    mutmut run --help
 
 for the available flags, to use other runners, etc. The recommended way to use
 mutmut if the defaults aren't working for you is to add a block in ``setup.cfg``.
@@ -86,11 +86,11 @@ grouped by file. You can now look at a specific mutant diff with ``mutmut show 3
 all mutants for a specific file with ``mutmut show path/to/file.py`` or all mutants
 with ``mutmut show all``.
 
-
 You can also write a mutant to disk with ``mutmut apply 3``. You should **REALLY**
 have the file you mutate under source code control and committed before you apply
 a mutant!
 
+To generate a HTML report for a web browser: ``mutmut html``
 
 Whitelisting
 ------------
