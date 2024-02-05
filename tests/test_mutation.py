@@ -154,6 +154,7 @@ def test_fstring_mutation_fstring_is_mutated_separately_from_other_mutations():
         ('x|=1', ['x=1', 'x&=1']),
         ('x^=1', ['x=1', 'x&=1']),
         ('x**=1', ['x=1', 'x*=1']),
+        ('a if x else z', ['11', '22']),
     ]
 )
 def test_multiple_mutations(original, expected):
@@ -161,6 +162,7 @@ def test_multiple_mutations(original, expected):
     assert len(mutations) == 3
     assert mutate(Context(source=original, mutation_id=mutations[0])) == (expected[0], 1)
     assert mutate(Context(source=original, mutation_id=mutations[1])) == (expected[1], 1)
+    # assert mutate(Context(source=original, mutation_id=mutations[2])) == (expected[1], 1)
 
 
 @pytest.mark.parametrize(
@@ -171,6 +173,7 @@ def test_multiple_mutations(original, expected):
         ('a = None', 'a = ""'),
         ('lambda **kwargs: None', 'lambda **kwargs: 0'),
         ('lambda: None', 'lambda: 0'),
+        ('1 if x else 2', 'x')
     ]
 )
 def test_basic_mutations_python3(original, expected):

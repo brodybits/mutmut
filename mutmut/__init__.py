@@ -385,10 +385,28 @@ def operator_mutation(value, node, **_):
 def and_or_test_mutation(children, node, **_):
     children = children[:]
     children[1] = Keyword(
+        # value={'and': ' True', 'or': ' False'}[children[1].value],
         value={'and': ' or', 'or': ' and'}[children[1].value],
         start_pos=node.start_pos,
     )
     return children
+
+
+def t_mutation(children, **_):
+    raise RuntimeError("detected ternary test not wanted")
+
+
+# def t_mutation(children, **_):
+#     c1 = children[:]
+#     c1[2] = Keyword(value=' True', start_pos=children[2].start_pos)
+#     c2 = children[:]
+#     c2[2] = Keyword(value=' False', start_pos=children[2].start_pos)
+#     return [c1, c2]
+
+
+# def t_mutation(children, **_):
+#     children = children[:]
+#     children[2] = Keyword('False')
 
 
 def expression_mutation(children, **_):
@@ -456,12 +474,14 @@ mutations_by_type = {
     'string': dict(value=string_mutation),
     'fstring': dict(children=fstring_mutation),
     'argument': dict(children=argument_mutation),
+    'test': dict(children=t_mutation),
     'or_test': dict(children=and_or_test_mutation),
     'and_test': dict(children=and_or_test_mutation),
     'lambdef': dict(children=lambda_mutation),
     'expr_stmt': dict(children=expression_mutation),
     'decorator': dict(children=decorator_mutation),
     'annassign': dict(children=expression_mutation),
+    # 'test': dict(children=t_mutation),
 }
 
 # TODO: detect regexes and mutate them in nasty ways? Maybe mutate all strings as if they are regexes
@@ -638,6 +658,7 @@ def mutate_node(node, context: Context):
             if isinstance(new, list) and not isinstance(old, list):
                 # multiple mutations
                 new_list = new
+                # assert False
             else:
                 # one mutation
                 new_list = [new]
