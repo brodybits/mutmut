@@ -33,7 +33,7 @@ from typing import Callable, Dict, Iterator, List, Optional, Set, Tuple
 from parso import parse
 from parso.python.tree import Name, Number, Keyword, FStringStart, FStringEnd
 
-__version__ = '2.4.4'
+__version__ = '2.4.5'
 
 
 if os.getcwd() not in sys.path:
@@ -1241,7 +1241,7 @@ def read_patch_data(patch_file_path: str):
         diffs = whatthepatch.parse_patch(f.read())
 
     return {
-        diff.header.new_path: {change.new for change in diff.changes if change.old is None}
+        os.path.normpath(diff.header.new_path): {change.new for change in diff.changes if change.old is None}
         for diff in diffs if diff.changes
     }
 
